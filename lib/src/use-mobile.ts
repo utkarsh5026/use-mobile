@@ -1,12 +1,23 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 
-interface UseMobileOptions {
+export type DeviceType = "phone" | "tablet" | "desktop";
+
+export type UseMobileOptions = {
   phoneBreakpoint?: number;
   tabletBreakpoint?: number;
   debounceDelay?: number;
   detectTouch?: boolean;
-  initialDevice?: string;
-}
+  initialDevice?: DeviceType;
+};
+
+export type UseMobileReturn = {
+  isMobile: boolean;
+  isPhone: boolean;
+  isTablet: boolean;
+  deviceType: "phone" | "tablet" | "desktop";
+  hasTouch: boolean;
+  width: number | null;
+};
 
 /**
  * ✨ useMobile ✨
@@ -25,7 +36,7 @@ interface UseMobileOptions {
  * Perfect for creating responsive experiences that feel just right on any device!
  * Let this hook do the heavy lifting while you focus on building amazing UIs. 😊
  */
-const useMobile = (options: UseMobileOptions = {}) => {
+const useMobile = (options: UseMobileOptions = {}): UseMobileReturn => {
   const {
     phoneBreakpoint = 768,
     tabletBreakpoint = 1024,
@@ -41,18 +52,18 @@ const useMobile = (options: UseMobileOptions = {}) => {
    * Handles server-side rendering with a smile. 😌
    */
   const initialState = useMemo(
-    () => ({
+    (): UseMobileReturn => ({
       isMobile: initialDevice !== "desktop",
       isPhone: initialDevice === "phone",
       isTablet: initialDevice === "tablet",
       deviceType: initialDevice,
       hasTouch: false,
-      width: null as number | null,
+      width: null,
     }),
     [initialDevice]
   );
 
-  const [deviceInfo, setDeviceInfo] = useState(initialState);
+  const [deviceInfo, setDeviceInfo] = useState<UseMobileReturn>(initialState);
   const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dimensionsRef = useRef({ width: 0, height: 0 });
 
@@ -63,7 +74,7 @@ const useMobile = (options: UseMobileOptions = {}) => {
    * what device is being used! Considers screen size, touch capabilities,
    * pointer types, and even special edge cases. 🔎
    */
-  const detectDevice = useCallback(() => {
+  const detectDevice = useCallback((): UseMobileReturn => {
     if (typeof window === "undefined") {
       return initialState;
     }
@@ -83,7 +94,7 @@ const useMobile = (options: UseMobileOptions = {}) => {
       window.matchMedia?.("(pointer: fine)").matches ?? false;
     const prefersMobile = window.matchMedia?.("(hover: none)").matches ?? false;
 
-    let detectedDeviceType = "desktop";
+    let detectedDeviceType: DeviceType = "desktop";
     let isPhoneDetected = false;
     let isTabletDetected = false;
 
