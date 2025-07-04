@@ -1,17 +1,59 @@
 {
-  "name": "lib",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "use-mobile",
+  "version": "1.0.0",
+  "description": "A React hook to detect device type and capabilities (mobile, tablet, desktop)",
+  "author": "Utkarsh Priyadarshi <utkarshpriyadarshi5026@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/utkarsh5026/use-mobile.git"
+  },
+  "homepage": "https://github.com/utkarsh5026/use-mobile#readme",
+  "bugs": {
+    "url": "https://github.com/utkarsh5026/use-mobile/issues"
+  },
+  "keywords": [
+    "react",
+    "hook",
+    "mobile",
+    "responsive",
+    "device-detection",
+    "typescript"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "sideEffects": false,
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "prepublishOnly": "npm run build",
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.4",
     "@types/react": "^19.1.8",
-    "typescript": "~5.8.3",
-    "vite": "^7.0.0"
+    "rollup": "^4.44.2",
+    "tslib": "^2.8.1",
+    "typescript": "~5.8.3"
   },
   "dependencies": {
     "react": "^19.1.0"
