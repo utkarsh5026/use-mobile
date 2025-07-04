@@ -14,7 +14,7 @@ export type UseMobileReturn = {
   isMobile: boolean;
   isPhone: boolean;
   isTablet: boolean;
-  deviceType: "phone" | "tablet" | "desktop";
+  deviceType: DeviceType;
   hasTouch: boolean;
   width: number | null;
 };
